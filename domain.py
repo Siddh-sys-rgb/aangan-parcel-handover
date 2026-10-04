@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS handovers (
  retry_key TEXT NOT NULL UNIQUE, fingerprint TEXT NOT NULL,
  completed_at INTEGER NOT NULL
 );
+
+CREATE TRIGGER IF NOT EXISTS immutable_events_update BEFORE UPDATE ON events BEGIN SELECT RAISE(ABORT,'Audit events are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_events_delete BEFORE DELETE ON events BEGIN SELECT RAISE(ABORT,'Audit events are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_handovers_update BEFORE UPDATE ON handovers BEGIN SELECT RAISE(ABORT,'Handovers are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_handovers_delete BEFORE DELETE ON handovers BEGIN SELECT RAISE(ABORT,'Handovers are immutable'); END;
 '''
 DEMO_USERS = [
  ('Kavita Shah','reception@aangan.demo','receptionist','Lobby','Lobby@2026'),
@@ -115,7 +120,7 @@ def reissue(path,secret,user,parcel_id,data):
 
 def handover(path,secret,user,parcel_id,data):
     code=data.get('pickup_code')
-    if not isinstance(code,str) or not re.fullmatch(r'\d{6}',code):raise Problem('Pickup code must contain six digits.')
+    if not isinstance(code,str) or not re.fullmatch(r'[0-9]{6}',code):raise Problem('Pickup code must contain six digits.')
     retry_key=text(data.get('retry_key'),'Retry key',90,8)
     if not re.fullmatch(r'[A-Za-z0-9_-]+',retry_key):raise Problem('Retry key contains invalid characters.')
     fingerprint=code_digest(secret,f'{parcel_id}:{code}')
