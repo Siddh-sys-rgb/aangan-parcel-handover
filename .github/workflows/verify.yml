@@ -1,0 +1,35 @@
+name: Verify local workflows
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned development dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Check dependency consistency
+        run: python -m pip check
+      - name: Check browser JavaScript syntax
+        run: node --check static/app.js
+      - name: Verify ownership transitions failures and concurrency
+        run: python -m pytest --cov=app --cov=core --cov=domain --cov-report=term-missing --cov-report=json --cov-fail-under=90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-${{ matrix.os }}
+          path: coverage.json
