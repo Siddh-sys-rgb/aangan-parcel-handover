@@ -161,7 +161,7 @@ python -m pip check
 node --check static/app.js
 ```
 
-Node is optional for the app and used only to check JavaScript syntax. Tests use temporary databases and never mutate your demo records. The local suite has **61 passing tests**, covering ownership, authentication/CSRF, validation limits, expiry and lockout, old-code invalidation, identical retries, conflicting commands, independent-connection races, audit rollback and immutable receipts/events. Combined statement-and-branch coverage is recorded in [`docs/verification.json`](docs/verification.json); it excludes browser rendering and is not a security certification.
+Node is optional for the app and used only to check JavaScript syntax. Tests use temporary databases and never mutate your demo records. The local suite has **63 passing tests**, covering ownership, authentication/CSRF, validation limits, expiry and lockout, old-code invalidation, identical retries, conflicting commands, independent-connection races, audit rollback and immutable receipts/events. Combined statement-and-branch coverage is recorded in [`docs/verification.json`](docs/verification.json); it excludes browser rendering and is not a security certification.
 
 The repository includes a Windows/Linux CI matrix. Real working desktop/mobile screenshots are under `docs/screenshots/`. Detailed implementation reasoning and review exercises are maintained privately outside this repository.
 

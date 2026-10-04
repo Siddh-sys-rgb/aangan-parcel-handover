@@ -102,7 +102,8 @@ def add_users(db, rows):
 
 def authenticate(db, email, password):
     email = text(email, 'Email', 120).lower()
-    password = text(password, 'Password', 150)
+    if not isinstance(password, str) or not 1 <= len(password) <= 150:
+        raise Problem('Password must contain 1–150 characters.')
     row = db.execute('SELECT * FROM users WHERE email=?', (email,)).fetchone()
     # Unknown identities still perform one password verification.
     dummy = generate_password_hash('invalid-login') if row is None else row['password_hash']

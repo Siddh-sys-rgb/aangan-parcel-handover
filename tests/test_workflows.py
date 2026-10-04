@@ -256,3 +256,8 @@ def test_corrupt_secret_is_rejected_without_overwriting(tmp_path):
     folder=tmp_path/'corrupt';folder.mkdir();(folder/'.session-secret').write_text('wrong')
     with pytest.raises(RuntimeError):create_app({'TESTING':True,'DATA_DIR':str(folder),'DEMO':False})
     assert (folder/'.session-secret').read_text()=='wrong'
+
+
+@pytest.mark.parametrize('password',[' Lobby@2026','Lobby@2026 '])
+def test_password_whitespace_is_not_silently_normalized(client,password):
+    assert post(client,'/api/login',{'email':RECEPTION[0],'password':password}).status_code==401
