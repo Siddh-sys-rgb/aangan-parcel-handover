@@ -6,9 +6,11 @@ The demo uses a teal-and-sand lobby register with parcel tickets, resident views
 
 ## Working screenshots
 
-![Aangan desktop parcel register](docs/screenshots/desktop.png)
+![Aangan desktop parcel register](docs/screenshots/overview.jpg)
 
-![Aangan mobile parcel register](docs/screenshots/mobile.png)
+![Aangan completed workflow](docs/screenshots/workflow.jpg)
+
+![Aangan mobile parcel register](docs/screenshots/mobile.jpg)
 
 ## What you can try
 
@@ -182,3 +184,5 @@ requirements*.txt      Runtime, development and tested dependencies
 ## Engineering discussion points
 
 Why commit a receipt and event in the same transaction? Why bind a retry key to the actor and code fingerprint? Why does code reissue invalidate an old code immediately? What changes for multiple buildings or SMS delivery? The implementation gives concrete examples for these interview conversations.
+
+See [browser verification](docs/BROWSER_CHECKS.md) for the recorded workflow and mobile checks.
